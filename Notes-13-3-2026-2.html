@@ -1,0 +1,105 @@
+<html>
+        <head><title>Downloaded HTML</title></head>
+        <body>
+            <pre style="white-space: pre-wrap; word-wrap: break-word;"><!DOCTYPE html>
+<html>
+<head>
+<style>
+  /* Pixel Art Style Setup */
+  :root { --grid-size: 40px; }
+  body { 
+    background: #2d5a27; /* Grass Green */
+    font-family: 'Courier New', Courier, monospace; 
+    margin: 0; overflow: hidden;
+    image-rendering: pixelated; /* Keeps pixels sharp */
+  }
+
+  /* The Pixel Grid */
+  #game-canvas {
+    width: 2000px; height: 2000px;
+    background-image: 
+      linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: var(--grid-size) var(--grid-size);
+    position: relative;
+  }
+
+  /* Pixel Items */
+  .pixel-item {
+    width: var(--grid-size); height: var(--grid-size);
+    position: absolute; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 32px; z-index: 10;
+  }
+
+  /* Bottom Inventory UI */
+  #hotbar {
+    position: fixed; bottom: 20px; left: 50%;
+    transform: translateX(-50%);
+    background: #f8e5c3; border: 4px solid #8d6e63;
+    padding: 10px; display: flex; gap: 10px; border-radius: 8px;
+    box-shadow: 0 4px 0 #5d4037;
+  }
+
+  .slot {
+    width: 50px; height: 50px; background: #fff;
+    border: 2px solid #8d6e63; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+  }
+  .slot:hover { background: #e0f2f1; }
+</style>
+</head>
+<body>
+
+<div id="game-canvas"></div>
+
+<div id="hotbar">
+  <div class="slot" onclick="spawn('🌲')">🌲</div>
+  <div class="slot" onclick="spawn('🏕️')">🏕️</div>
+  <div class="slot" onclick="spawn('🌻')">🌻</div>
+  <div class="slot" onclick="spawn('🪨')">🪨</div>
+  <div class="slot" onclick="spawn('🧍')">🧍</div>
+</div>
+
+<script>
+  const grid = 40;
+
+  function spawn(emoji) {
+    const item = document.createElement('div');
+    item.className = 'pixel-item';
+    item.innerHTML = emoji;
+    
+    // Start in center of screen
+    item.style.left = (Math.round(window.innerWidth/2 / grid) * grid) + "px";
+    item.style.top = (Math.round(window.innerHeight/2 / grid) * grid) + "px";
+    
+    document.getElementById('game-canvas').appendChild(item);
+    addDrag(item);
+  }
+
+  function addDrag(el) {
+    let isDragging = false;
+
+    el.onmousedown = (e) => { isDragging = true; el.style.zIndex = 1000; };
+    
+    document.onmousemove = (e) => {
+      if (!isDragging) return;
+      // Snap to Grid Logic
+      let x = Math.round(e.clientX / grid) * grid - (grid/2);
+      let y = Math.round(e.clientY / grid) * grid - (grid/2);
+      el.style.left = x + "px";
+      el.style.top = y + "px";
+    };
+
+    document.onmouseup = () => { 
+      isDragging = false; 
+      el.style.zIndex = 10;
+    };
+  }
+</script>
+</body>
+</html>
+</pre>
+        </body>
+    </html>
